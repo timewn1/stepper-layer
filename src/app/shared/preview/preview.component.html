@@ -1,0 +1,24 @@
+<mat-card>
+  <div class="rounded min-h-400 relative text-12">
+    <div
+      class="absolute inset-0 border border-gray-300 rounded flex justify-center cursor-pointer"
+      *ngFor="let layer of layers.slice(0, 6); let i = index; let last = last"
+      (click)="selectLayer(i)"
+      [class.items-center]="last"
+      [style.top.px]="30 * i"
+      [style.bottom.px]="30 * i"
+      [style.left.px]="30 * i"
+      [style.right.px]="30 * i"
+      [class.bg-sky-300]="layer.selected"
+      [class.bg-white]="!layer.selected"
+    >
+      <p class="mt-5">{{ layer.title }}</p>
+    </div>
+  </div>
+
+  <p class="text-center text-13" *ngIf="!layers.length">No layers available.</p>
+  <div class="text-13 px-10 py-5 bg-red-500 rounded text-white mt-20 shadow shadow-red-300" *ngIf="layers.length > 6">
+    <b>WARNING</b>: Too many layers. There are too many layers to be rendered. We are rendering only <b>6</b> layers at
+    the moment.
+  </div>
+</mat-card>

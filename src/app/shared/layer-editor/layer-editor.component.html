@@ -1,0 +1,45 @@
+<form [formGroup]="form" class="w-full min-w-full max-w-full lg:min-w-450 lg:max-w-450 xl:min-w-550 xl:max-w-450">
+  <div cdkDropList class="layer-list" (cdkDropListDropped)="drop($event)" formArrayName="layers">
+    <p class="text-center text-13 mt-30 mb-30" *ngIf="!form.controls.layers.length">No layers available</p>
+    <div
+      class="layer-box pt-20 px-20 min-h-100 bg-white text-14 cursor-move flex items-center"
+      *ngFor="let layer of form.controls.layers.controls; let i = index"
+      cdkDrag
+    >
+      <div class="flex items-center w-full" [formGroupName]="i">
+        <div class="mb-15 flex items-center w-full" *ngIf="!layer.controls.edit.value; else editTemplate">
+          <p class="w-full">{{ layer.controls.title.value || 'Untitled' }}</p>
+
+          <div class="ml-15 flex items-center">
+            <button type="button" mat-icon-button color="primary" (click)="layer.controls.edit.setValue(true)">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button type="button" mat-icon-button color="primary" class="ml-10" (click)="deleteLayer(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <ng-template #editTemplate>
+          <mat-form-field class="w-full" appearance="outline">
+            <mat-label>Title</mat-label>
+            <input matInput [formControl]="layer.controls.title" (keyup.enter)="saveLayer(layer)" />
+          </mat-form-field>
+
+          <div class="mb-15 ml-15">
+            <button mat-button type="button" color="primary" (click)="saveLayer(layer)" [disabled]="layer.invalid">
+              Save
+            </button>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-30 flex justify-center min-w-full max-w-full">
+    <button type="button" mat-raised-button color="primary" class="w-full max-w-300" (click)="addLayer()">
+      <mat-icon>add</mat-icon> <span class="ml-10">Add Layer</span>
+    </button>
+  </div>
+</form>
